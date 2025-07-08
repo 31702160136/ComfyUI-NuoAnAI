@@ -61,7 +61,7 @@ class _GPTImageNodeBase:
     """
 
     FUNCTION = "execute"
-    CATEGORY = "NuoAnAI/GPT Image"
+    CATEGORY = "NuoAnAI/NuoAnAI Image"
 
     @classmethod
     def IS_CHANGED(s, **kwargs):
@@ -136,11 +136,10 @@ class GPTImage_TextToImage(_GPTImageNodeBase):
                         "default": "A colorful and stylized mechanical bird sculpture, with bright blue and green body, orange accent stripes, and a white head. The bird has a smooth, polished surface and is positioned as if perched on a branch. The sculpture's pieces are segmented, giving it a modular, toy-like appearance, with visible joints between the segments. The background is a soft, blurred green to evoke a natural, outdoors feel. The word 'GPT Image' is drawn with a large white touch on it, with distinct textures",
                     },
                 ),
-                "variants": ([1, 2, 3, 4], {"default": 1}),
-            },
-            "optional": {
+                "variants": ("INT", {"default": 1, "min": 1, "max": 2}),
                 "size": ("STRING", {"default": "auto"}),
             },
+            "optional": {},
         }
 
     RETURN_TYPES = ("IMAGE", "STRING")
@@ -191,7 +190,7 @@ class GPTImage_SizeSelector:
     RETURN_TYPES = ("STRING",)
     RETURN_NAMES = ("size",)
     FUNCTION = "execute"
-    CATEGORY = "NuoAnAI/GPT Image"
+    CATEGORY = "NuoAnAI/NuoAnAI Image"
 
     @classmethod
     def IS_CHANGED(s, **kwargs):
@@ -199,6 +198,31 @@ class GPTImage_SizeSelector:
 
     def execute(self, size):
         return (size,)
+
+
+class GPTImage_VariantsSelector:
+    @classmethod
+    def INPUT_TYPES(cls):
+        return {
+            "required": {
+                "variants": (
+                    [1, 2],
+                    {"default": 1},
+                ),
+            }
+        }
+
+    RETURN_TYPES = ("INT",)
+    RETURN_NAMES = ("variants",)
+    FUNCTION = "execute"
+    CATEGORY = "NuoAnAI/NuoAnAI Image"
+
+    @classmethod
+    def IS_CHANGED(s, **kwargs):
+        return float("NaN")
+
+    def execute(self, variants):
+        return (variants,)
 
 
 # 节点3: 图生图
@@ -214,7 +238,7 @@ class GPTImage_ImageToImage(_GPTImageNodeBase):
                         "default": "The character is sitting cross-legged on the sofa, and the Dalmatian is lying on the blanket sleeping.",
                     },
                 ),
-                "variants": ([1, 2], {"default": 1}),
+                "variants": ("INT", {"default": 1, "min": 1, "max": 2}),
                 "size": ("STRING", {"default": "auto"}),
             },
             "optional": {
@@ -316,13 +340,15 @@ class GPTImage_ImageToImage(_GPTImageNodeBase):
 
 
 NODE_CLASS_MAPPINGS = {
-    "NuoAnAIGPTImage_TextToImage": GPTImage_TextToImage,
-    "NuoAnAIGPTImage_ImageToImage": GPTImage_ImageToImage,
-    "NuoAnAIGPTImage_SizeSelector": GPTImage_SizeSelector,
+    "NuoAnAINuoAnAI_Image_TextToImage": GPTImage_TextToImage,
+    "NuoAnAINuoAnAI_Image_ImageToImage": GPTImage_ImageToImage,
+    "NuoAnAINuoAnAI_Image_SizeSelector": GPTImage_SizeSelector,
+    "NuoAnAINuoAnAI_Image_VariantsSelector": GPTImage_VariantsSelector,
 }
 
 NODE_DISPLAY_NAME_MAPPINGS = {
-    "NuoAnAIGPTImage_TextToImage": "🎨 NuoAnAI GPT Image - Text to Image",
-    "NuoAnAIGPTImage_ImageToImage": "🎨 NuoAnAI GPT Image - Image to Image",
-    "NuoAnAIGPTImage_SizeSelector": "📐 NuoAnAI GPT Image - Size Selector",
+    "NuoAnAINuoAnAI_Image_TextToImage": "🎨 NuoAnAI Image - Text to Image",
+    "NuoAnAINuoAnAI_Image_ImageToImage": "🎨 NuoAnAI Image - Image to Image",
+    "NuoAnAINuoAnAI_Image_SizeSelector": "📐 NuoAnAI Image - Size Selector",
+    "NuoAnAINuoAnAI_Image_VariantsSelector": "🔢 NuoAnAI Image - Variants Selector",
 }

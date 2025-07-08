@@ -82,6 +82,31 @@ class Flux_AspectRatioSelector:
         return (aspect_ratio,)
 
 
+class Flux_NumImagesSelector:
+    @classmethod
+    def INPUT_TYPES(cls):
+        return {
+            "required": {
+                "num_images": (
+                    [1, 2, 3, 4],
+                    {"default": 1},
+                ),
+            }
+        }
+
+    RETURN_TYPES = ("INT",)
+    RETURN_NAMES = ("num_images",)
+    FUNCTION = "execute"
+    CATEGORY = "NuoAnAI/Flux.1"
+
+    @classmethod
+    def IS_CHANGED(s, **kwargs):
+        return float("NaN")
+
+    def execute(self, num_images):
+        return (num_images,)
+
+
 class _GrsaiFluxKontextNodeBase:
     """
     所有Flux-Kontext节点的内部基类，处理通用逻辑。
@@ -183,7 +208,6 @@ class GrsaiFluxKontext_TextToImage(_GrsaiFluxKontextNodeBase):
                     ],
                     {"default": "flux-kontext-max"},
                 ),
-                "num_images": ([1, 2, 3, 4], {"default": 1}),
                 "seed": ("INT", {"default": 0, "min": 0, "max": 0xFFFFFFFFFFFFFFFF}),
                 "guidance_scale": (
                     "FLOAT",
@@ -194,6 +218,7 @@ class GrsaiFluxKontext_TextToImage(_GrsaiFluxKontextNodeBase):
                     "STRING",
                     {"default": "1:1"},
                 ),
+                "num_images": ("INT", {"default": 1, "min": 1, "max": 4}),
                 # "output_format": (default_config.SUPPORTED_OUTPUT_FORMATS, {"default": "png"}),
                 "safety_tolerance": ("INT", {"default": 6, "min": 0, "max": 6}),
                 "prompt_upsampling": ("BOOLEAN", {"default": False}),
@@ -251,7 +276,6 @@ class GrsaiFluxKontext_ImageToImage(_GrsaiFluxKontextNodeBase):
                     ["flux-kontext-pro", "flux-kontext-max"],
                     {"default": "flux-kontext-max"},
                 ),
-                "num_images": ([1, 2, 3, 4], {"default": 1}),
                 "seed": ("INT", {"default": 0, "min": 0, "max": 0xFFFFFFFFFFFFFFFF}),
                 # "guidance_scale": (
                 #     "FLOAT",
@@ -262,6 +286,7 @@ class GrsaiFluxKontext_ImageToImage(_GrsaiFluxKontextNodeBase):
                     "STRING",
                     {"default": "1:1"},
                 ),
+                "num_images": ("INT", {"default": 1, "min": 1, "max": 4}),
                 # "output_format": (
                 #     default_config.SUPPORTED_OUTPUT_FORMATS,
                 #     {"default": "png"},
@@ -359,7 +384,6 @@ class GrsaiFluxKontext_MultiImageToImage(_GrsaiFluxKontextNodeBase):
                     ["flux-kontext-pro", "flux-kontext-max"],
                     {"default": "flux-kontext-max"},
                 ),
-                "num_images": ([1, 2, 3, 4], {"default": 1}),
                 "seed": ("INT", {"default": 0, "min": 0, "max": 0xFFFFFFFFFFFFFFFF}),
                 # "guidance_scale": (
                 #     "FLOAT",
@@ -370,6 +394,7 @@ class GrsaiFluxKontext_MultiImageToImage(_GrsaiFluxKontextNodeBase):
                     "STRING",
                     {"default": "1:1"},
                 ),
+                "num_images": ("INT", {"default": 1, "min": 1, "max": 4}),
                 # "output_format": (
                 #     default_config.SUPPORTED_OUTPUT_FORMATS,
                 #     {"default": "png"},
@@ -480,6 +505,7 @@ NODE_CLASS_MAPPINGS = {
     "NuoAnAIFluxKontext_ImageToImage": GrsaiFluxKontext_ImageToImage,
     "NuoAnAIFluxKontext_MultiImageToImage": GrsaiFluxKontext_MultiImageToImage,
     "NuoAnAIFluxKontext_AspectRatioSelector": Flux_AspectRatioSelector,
+    "NuoAnAIFluxKontext_NumImagesSelector": Flux_NumImagesSelector,
 }
 
 NODE_DISPLAY_NAME_MAPPINGS = {
@@ -487,4 +513,5 @@ NODE_DISPLAY_NAME_MAPPINGS = {
     "NuoAnAIFluxKontext_ImageToImage": "🎨 NuoAnAI Flux.1 Kontext - Editing",
     "NuoAnAIFluxKontext_MultiImageToImage": "🎨 NuoAnAI Flux.1 Kontext - Editing (Multi Image)",
     "NuoAnAIFluxKontext_AspectRatioSelector": "📐 NuoAnAI Flux.1 Kontext - Aspect Ratio Selector",
+    "NuoAnAIFluxKontext_NumImagesSelector": "🔢 NuoAnAI Flux.1 Kontext - Num Images Selector",
 }

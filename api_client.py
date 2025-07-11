@@ -172,7 +172,6 @@ class GrsaiAPI:
             if value is not None and value != "":
                 payload[key] = value
 
-        print(json.dumps(payload, indent=4, ensure_ascii=False))
         print("🎨 开始生成图像...")
         # 发送请求
         try:
@@ -271,7 +270,6 @@ class GrsaiAPI:
             if value is not None and value != "":
                 payload[key] = value
 
-        print(json.dumps(payload, indent=4, ensure_ascii=False))
         print("🎨 开始生成图像...")
         # 发送请求
         try:
